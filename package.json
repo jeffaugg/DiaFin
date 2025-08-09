@@ -1,0 +1,31 @@
+{
+  "name": "diafin",
+  "private": true,
+  "scripts": {
+    "build": "turbo run build",
+    "dev": "turbo run dev",
+    "lint": "turbo run lint",
+    "format": "prettier --write \"**/*.{ts,tsx,md}\"",
+    "check-types": "turbo run check-types"
+  },
+  "devDependencies": {
+    "prettier": "^3.6.2",
+    "prisma": "^6.13.0",
+    "turbo": "^2.5.5",
+    "typescript": "5.8.3"
+  },
+  "engines": {
+    "node": ">=18"
+  },
+  "packageManager": "npm@10.9.2",
+  "workspaces": [
+    "apps/*",
+    "packages/*"
+  ],
+  "dependencies": {
+    "@planetscale/database": "^1.19.0",
+    "kysely": "^0.28.4",
+    "kysely-planetscale": "^1.7.1",
+    "prisma-kysely": "^1.8.0"
+  }
+}
