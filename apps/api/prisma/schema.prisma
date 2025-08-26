@@ -15,23 +15,24 @@ enum TxType {
 }
 
 model User {
-  id    String @id @default(uuid()) @db.Uuid
+  id    String @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
   name  String
-  phone String @unique
+  email String @unique
+  password String
 
   transactions      Transaction[]
   fixedTransactions FixedTransaction[]
   months            Month[]
-  budgetSetting     BudgetSetting?
   categories        Category[]
-
+  budgetSetting     BudgetSetting?
+  
   createdAt DateTime  @default(now()) @map("created_at") @db.Timestamptz
-  updatedAt DateTime  @updatedAt @map("updated_at") @db.Timestamptz
+  updatedAt DateTime  @default(now()) @updatedAt @map("updated_at") @db.Timestamptz
   deletedAt DateTime? @map("deleted_at") @db.Timestamptz
 }
 
 model Category {
-  id     String @id @default(uuid()) @db.Uuid
+  id     String @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
   userId String @db.Uuid
   name   String
 
@@ -41,7 +42,7 @@ model Category {
   fixedTransactions FixedTransaction[]
 
   createdAt DateTime  @default(now()) @map("created_at") @db.Timestamptz
-  updatedAt DateTime  @updatedAt @map("updated_at") @db.Timestamptz
+  updatedAt DateTime  @default(now()) @updatedAt @map("updated_at") @db.Timestamptz
   deletedAt DateTime? @map("deleted_at") @db.Timestamptz
 
   @@unique([userId, name])
@@ -49,7 +50,7 @@ model Category {
 }
 
 model FixedTransaction {
-  id          String  @id @default(uuid()) @db.Uuid
+  id          String  @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
   userId      String  @db.Uuid
   categoryId  String  @db.Uuid
   type        TxType
@@ -60,7 +61,7 @@ model FixedTransaction {
   category Category @relation(fields: [categoryId], references: [id])
 
   createdAt DateTime  @default(now()) @map("created_at") @db.Timestamptz
-  updatedAt DateTime  @updatedAt @map("updated_at") @db.Timestamptz
+  updatedAt DateTime  @default(now()) @updatedAt @map("updated_at") @db.Timestamptz
   deletedAt DateTime? @map("deleted_at") @db.Timestamptz
 
   @@index([userId])
@@ -68,7 +69,7 @@ model FixedTransaction {
 }
 
 model Transaction {
-  id          String   @id @default(uuid()) @db.Uuid
+  id          String   @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
   userId      String   @db.Uuid
   categoryId  String   @db.Uuid
   type        TxType
@@ -80,7 +81,7 @@ model Transaction {
   category Category @relation(fields: [categoryId], references: [id])
 
   createdAt DateTime  @default(now()) @map("created_at") @db.Timestamptz
-  updatedAt DateTime  @updatedAt @map("updated_at") @db.Timestamptz
+  updatedAt DateTime  @default(now()) @updatedAt @map("updated_at") @db.Timestamptz
   deletedAt DateTime? @map("deleted_at") @db.Timestamptz
 
   @@index([userId, occurredAt])
@@ -88,19 +89,19 @@ model Transaction {
 }
 
 model BudgetSetting {
-  id               String @id @default(uuid()) @db.Uuid
+  id               String @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
   userId           String @unique @db.Uuid
   savingPercentage Int
 
   user User @relation(fields: [userId], references: [id], onDelete: Cascade)
 
   createdAt DateTime  @default(now()) @map("created_at") @db.Timestamptz
-  updatedAt DateTime  @updatedAt @map("updated_at") @db.Timestamptz
+  updatedAt DateTime  @default(now()) @updatedAt @map("updated_at") @db.Timestamptz
   deletedAt DateTime? @map("deleted_at") @db.Timestamptz
 }
 
 model Month {
-  id           String   @id @default(uuid()) @db.Uuid
+  id           String   @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
   userId       String   @db.Uuid
   monthStart   DateTime @db.Timestamptz
   startBalance Int
@@ -108,7 +109,7 @@ model Month {
   user User @relation(fields: [userId], references: [id], onDelete: Cascade)
 
   createdAt DateTime  @default(now()) @map("created_at") @db.Timestamptz
-  updatedAt DateTime  @updatedAt @map("updated_at") @db.Timestamptz
+  updatedAt DateTime  @default(now()) @updatedAt @map("updated_at") @db.Timestamptz
   deletedAt DateTime? @map("deleted_at") @db.Timestamptz
 
   @@unique([userId, monthStart])

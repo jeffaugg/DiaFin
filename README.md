@@ -1,135 +1,106 @@
-# Turborepo starter
+# DiaFin 
 
-This Turborepo starter is maintained by the Turborepo core team.
+Este projeto é um monorepo gerenciado com Turborepo, utilizando React, NestJS, Prisma, Docker, PostgreSQL para gerenciamento de variáveis de ambiente.
 
-## Using this example
+## Pré-requisitos
 
-Run the following command:
+- Node.js >= 22.15.0
+- npm >= 11.0
+- Docker e Docker Compose
 
-```sh
-npx create-turbo@latest
+## 1. Instalação e Configuração
+
+### 1.1. Clone o repositório
+
+```bash
+git clone <url-do-repositorio>
+cd DiaFin
 ```
 
-## What's inside?
+### 1.2. Instale as dependências
 
-This Turborepo includes the following packages/apps:
-
-### Apps and Packages
-
-- `docs`: a [Next.js](https://nextjs.org/) app
-- `web`: another [Next.js](https://nextjs.org/) app
-- `@repo/ui`: a stub React component library shared by both `web` and `docs` applications
-- `@repo/eslint-config`: `eslint` configurations (includes `eslint-config-next` and `eslint-config-prettier`)
-- `@repo/typescript-config`: `tsconfig.json`s used throughout the monorepo
-
-Each package/app is 100% [TypeScript](https://www.typescriptlang.org/).
-
-### Utilities
-
-This Turborepo has some additional tools already setup for you:
-
-- [TypeScript](https://www.typescriptlang.org/) for static type checking
-- [ESLint](https://eslint.org/) for code linting
-- [Prettier](https://prettier.io) for code formatting
-
-### Build
-
-To build all apps and packages, run the following command:
-
-```
-cd my-turborepo
-
-# With [global `turbo`](https://turborepo.com/docs/getting-started/installation#global-installation) installed (recommended)
-turbo build
-
-# Without [global `turbo`](https://turborepo.com/docs/getting-started/installation#global-installation), use your package manager
-npx turbo build
-yarn dlx turbo build
-pnpm exec turbo build
+```bash
+npm install
 ```
 
-You can build a specific package by using a [filter](https://turborepo.com/docs/crafting-your-repository/running-tasks#using-filters):
+### 1.3. Configure o Infisical
 
-```
-# With [global `turbo`](https://turborepo.com/docs/getting-started/installation#global-installation) installed (recommended)
-turbo build --filter=docs
+1. Instale o CLI do Infisical (caso não tenha): https://infisical.com/docs/cli/overview
+2. Faça login:
+   ```bash
+   infisical login
+   ```
 
-# Without [global `turbo`](https://turborepo.com/docs/getting-started/installation#global-installation), use your package manager
-npx turbo build --filter=docs
-yarn exec turbo build --filter=docs
-pnpm exec turbo build --filter=docs
-```
+## 2. Rodando o Projeto em Desenvolvimento
 
-### Develop
+### 2.1. Suba o banco de dados com Docker
 
-To develop all apps and packages, run the following command:
-
-```
-cd my-turborepo
-
-# With [global `turbo`](https://turborepo.com/docs/getting-started/installation#global-installation) installed (recommended)
-turbo dev
-
-# Without [global `turbo`](https://turborepo.com/docs/getting-started/installation#global-installation), use your package manager
-npx turbo dev
-yarn exec turbo dev
-pnpm exec turbo dev
+```bash
+npm run docker-compose up -d
 ```
 
-You can develop a specific package by using a [filter](https://turborepo.com/docs/crafting-your-repository/running-tasks#using-filters):
+- O banco PostgreSQL e Adminer serão iniciados.
+- Adminer disponível em: http://localhost:8080
 
-```
-# With [global `turbo`](https://turborepo.com/docs/getting-started/installation#global-installation) installed (recommended)
-turbo dev --filter=web
+### 2.2. Gere o client do Prisma
 
-# Without [global `turbo`](https://turborepo.com/docs/getting-started/installation#global-installation), use your package manager
-npx turbo dev --filter=web
-yarn exec turbo dev --filter=web
-pnpm exec turbo dev --filter=web
+```bash
+npm run db:build
 ```
 
-### Remote Caching
+### 2.3. Execute as migrações do banco
 
-> [!TIP]
-> Vercel Remote Cache is free for all plans. Get started today at [vercel.com](https://vercel.com/signup?/signup?utm_source=remote-cache-sdk&utm_campaign=free_remote_cache).
-
-Turborepo can use a technique known as [Remote Caching](https://turborepo.com/docs/core-concepts/remote-caching) to share cache artifacts across machines, enabling you to share build caches with your team and CI/CD pipelines.
-
-By default, Turborepo will cache locally. To enable Remote Caching you will need an account with Vercel. If you don't have an account you can [create one](https://vercel.com/signup?utm_source=turborepo-examples), then enter the following commands:
-
-```
-cd my-turborepo
-
-# With [global `turbo`](https://turborepo.com/docs/getting-started/installation#global-installation) installed (recommended)
-turbo login
-
-# Without [global `turbo`](https://turborepo.com/docs/getting-started/installation#global-installation), use your package manager
-npx turbo login
-yarn exec turbo login
-pnpm exec turbo login
+```bash
+npm run db:migrate:dev
 ```
 
-This will authenticate the Turborepo CLI with your [Vercel account](https://vercel.com/docs/concepts/personal-accounts/overview).
+### 2.4. Inicie o ambiente de desenvolvimento
 
-Next, you can link your Turborepo to your Remote Cache by running the following command from the root of your Turborepo:
-
-```
-# With [global `turbo`](https://turborepo.com/docs/getting-started/installation#global-installation) installed (recommended)
-turbo link
-
-# Without [global `turbo`](https://turborepo.com/docs/getting-started/installation#global-installation), use your package manager
-npx turbo link
-yarn exec turbo link
-pnpm exec turbo link
+```bash
+npm run dev
 ```
 
-## Useful Links
+- O backend será iniciado em modo watch.
 
-Learn more about the power of Turborepo:
+## 3. Prisma
 
-- [Tasks](https://turborepo.com/docs/crafting-your-repository/running-tasks)
-- [Caching](https://turborepo.com/docs/crafting-your-repository/caching)
-- [Remote Caching](https://turborepo.com/docs/core-concepts/remote-caching)
-- [Filtering](https://turborepo.com/docs/crafting-your-repository/running-tasks#using-filters)
-- [Configuration Options](https://turborepo.com/docs/reference/configuration)
-- [CLI Usage](https://turborepo.com/docs/reference/command-line-reference)
+- Para abrir o Prisma Studio:
+  ```bash
+  cd apps/api
+  npx prisma studio
+  ```
+- Para criar uma nova migração:
+  ```bash
+  cd apps/api
+  npx prisma migrate dev --name nome_da_migracao
+  ```
+
+## 4. Criando Novos Módulos na API (NestJS CLI)
+
+Acesse a pasta `apps/api` e utilize o CLI do NestJS:
+
+```bash
+cd apps/api
+npx nest g resource nome-do-modulo
+```
+
+- Os arquivos serão criados em `src/modules/nome-do-modulo`.
+- Siga a estrutura de pastas e utilize DTOs para validação.
+
+## 5. Padrão de Commits
+
+Utilize o padrão de commits do [iuricode/padroes-de-commits](https://github.com/iuricode/padroes-de-commits):
+
+Exemplos:
+- `✨ feat: descrição do que foi feito` (nova funcionalidade)
+- `🐛 fix: descrição do bug corrigido`
+- `📚 docs: alteração na documentação`
+- `♻️ refactor: refatoração de código`
+- `✔️ test: adição ou alteração de testes`
+- `🔧 chore: tarefas de build, infra, etc.`
+
+Consulte a tabela completa no repositório oficial para mais exemplos e recomendações.
+
+---
+
+Dúvidas? Consulte a documentação de cada ferramenta.
