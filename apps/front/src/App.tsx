@@ -3,6 +3,7 @@ import { Toaster } from 'react-hot-toast';
 
 import { AuthProvider } from './app/contexts/AuthContext';
 import { Router } from './router';
+import { ConfigProvider } from 'antd';
 
 const queryClient = new QueryClient({
 	defaultOptions: {
@@ -17,8 +18,16 @@ export function App() {
 	return (
 		<QueryClientProvider client={queryClient}>
 			<AuthProvider>
-				<Router />
-				<Toaster />
+				<ConfigProvider
+					theme={{
+						token: {
+							colorBgContainer: '#F9FAFB'
+						}
+					}}
+					>
+					<Router />
+					<Toaster />
+				</ConfigProvider>
 			</AuthProvider>
 		</QueryClientProvider>
 	);
